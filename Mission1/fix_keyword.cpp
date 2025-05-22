@@ -5,7 +5,6 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include "fix_keyword.h"
 using namespace std;
 #define MAX_SCORE (2100000000)
 
