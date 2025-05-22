@@ -1,11 +1,11 @@
 #pragma once
-#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
+#define UNIT_TEST (1)
 using namespace std;
 
 struct Node {

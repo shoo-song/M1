@@ -62,37 +62,6 @@ void KeywordFixer::_ParseInput(string InputWord, string InputDay, int& DayIndex,
 		IsWeekend = 1;
 	}
 }
-void ScoreCalculater::SetScore(int value) {
-	for (int i = 0; i < 7; i++) {
-		for (Node& node : weekBest[i]) {
-			node.point = value;
-		}
-	}
-	for (int i = 0; i < 2; i++) {
-		int num = 1;
-		for (Node& node : twoBest[i]) {
-			node.point = value;
-		}
-	}
-}
-void ScoreCalculater::_ResetScore(void) {
-	//재정렬 작업
-	UZ = 9;
-	for (int i = 0; i < 7; i++) {
-		int num = 1;
-		for (Node& node : weekBest[i]) {
-			node.point = num;
-			num++;
-		}
-	}
-	for (int i = 0; i < 2; i++) {
-		int num = 1;
-		for (Node& node : twoBest[i]) {
-			node.point = num;
-			num++;
-		}
-	}
-}
 string KeywordFixer::_FindChalHit(string InputWord, int DayIndex, int IsWeekend) {
 	for (Node& node : weekBest[DayIndex]) {
 		if (similer(node.name, InputWord)) {
@@ -106,25 +75,6 @@ string KeywordFixer::_FindChalHit(string InputWord, int DayIndex, int IsWeekend)
 		}
 	}
 	return InputWord;
-}
-void ScoreCalculater::IncreaseScore(Node& node) {
-	bool bResetScore = false;
-	long long temp = 0;
-	if (min_score > (double)node.point * 0.1) {
-		node.point++;
-	}
-	else {
-		temp = node.point + node.point * 0.1;
-		if (temp <= max_score) {
-			node.point += node.point * 0.1;
-		}
-	}
-	if ((node.point > max_score) || (temp > max_score)) {
-		_ResetScore();
-	}
-}
-void ScoreCalculater::IncreaseUZ(void) {
-	if (++UZ >= max_score) _ResetScore();
 }
 bool KeywordFixer::_IsPerfectHit(string InputWord, int DayIndex, int IsWeekend) {
 	bool hit = false;
@@ -240,7 +190,56 @@ string KeywordFixer::FindWord(string InputWord, string InputDay) {
 
 	return InputWord;
 }
-
+void ScoreCalculater::SetScore(int value) {
+	for (int i = 0; i < 7; i++) {
+		for (Node& node : weekBest[i]) {
+			node.point = value;
+		}
+	}
+	for (int i = 0; i < 2; i++) {
+		int num = 1;
+		for (Node& node : twoBest[i]) {
+			node.point = value;
+		}
+	}
+}
+void ScoreCalculater::_ResetScore(void) {
+	//재정렬 작업
+	UZ = 9;
+	for (int i = 0; i < 7; i++) {
+		int num = 1;
+		for (Node& node : weekBest[i]) {
+			node.point = num;
+			num++;
+		}
+	}
+	for (int i = 0; i < 2; i++) {
+		int num = 1;
+		for (Node& node : twoBest[i]) {
+			node.point = num;
+			num++;
+		}
+	}
+}
+void ScoreCalculater::IncreaseScore(Node& node) {
+	bool bResetScore = false;
+	long long temp = 0;
+	if (min_score > (double)node.point * 0.1) {
+		node.point++;
+	}
+	else {
+		temp = node.point + node.point * 0.1;
+		if (temp <= max_score) {
+			node.point += node.point * 0.1;
+		}
+	}
+	if ((node.point > max_score) || (temp > max_score)) {
+		_ResetScore();
+	}
+}
+void ScoreCalculater::IncreaseUZ(void) {
+	if (++UZ >= max_score) _ResetScore();
+}
 #ifndef UNIT_TEST
 int main() {
 	ifstream fin{ "keyword_weekday_500.txt" }; //500개 데이터 입력
