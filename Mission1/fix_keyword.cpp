@@ -58,7 +58,7 @@ bool similer(const std::string& a, const std::string& b) {
 	if (score >= 80) return true;
 	return false;
 }
-void _ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend) {
+bool _ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend) {
 	IsWeekend = 0;
 	if (InputDay == "monday") DayIndex = 0;
 	else if (InputDay == "tuesday") DayIndex = 1;
@@ -73,6 +73,11 @@ void _ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeeken
 		DayIndex = 6;
 		IsWeekend = 1;
 	}
+	else {
+		cout << "Input Error";
+		return false;
+	}
+	return true;
 }
 void _ResetScore(void) {
 	//재정렬 작업
@@ -186,7 +191,7 @@ void _AddNewWord(string InputWord, int DayIndex, int IsWeekend) {
 		}
 	}
 }
-string FineWord(string InputWord, string InputDay) {
+string FindWord(string InputWord, string InputDay) {
 	// [refac] too long, delete repeatation
 	int DayIndex = 0;
 	int IsWeekend = 0;
@@ -211,7 +216,7 @@ void input() {
 	for (int i = 0; i < 500; i++) {
 		string InputWord, InputDay;	// [refac] t1, t2 naimg 
 		fin >> InputWord >> InputDay; // [refac] file access fail case 
-		string ret = FineWord(InputWord, InputDay);
+		string ret = FindWord(InputWord, InputDay);
 		std::cout << ret << "\n";
 	}
 }

@@ -1,0 +1,17 @@
+[2025-05-22 13:59:23] [info] Start Program:
+Path:".\\x64\\Debug\\Mission2.exe"
+Arguments:
+Working directory: not set.
+Modules: Selected: * Excluded: 
+Sources: Selected: C:*.cpp Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: html coverage 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+[2025-05-22 13:59:23] [error] Error: Cannot find path: .\x64\Debug\Mission2.exe

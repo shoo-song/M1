@@ -46,7 +46,7 @@ bool KeywordFixer::similer(const std::string& a, const std::string& b) {
 	if (score >= 80) return true;
 	return false;
 }
-bool KeywordFixer::_ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend) {
+void KeywordFixer::_ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend) {
 	IsWeekend = 0;
 	if (InputDay == "monday") DayIndex = 0;
 	else if (InputDay == "tuesday") DayIndex = 1;
@@ -61,11 +61,19 @@ bool KeywordFixer::_ParseInput(string InputWord, string InputDay, int& DayIndex,
 		DayIndex = 6;
 		IsWeekend = 1;
 	}
-	else {
-		cout << "Input Error";
-		return false;
+}
+void ScoreCalculater::SetScore(int value) {
+	for (int i = 0; i < 7; i++) {
+		for (Node& node : weekBest[i]) {
+			node.point = value;
+		}
 	}
-	return true;
+	for (int i = 0; i < 2; i++) {
+		int num = 1;
+		for (Node& node : twoBest[i]) {
+			node.point = value;
+		}
+	}
 }
 void ScoreCalculater::_ResetScore(void) {
 	//재정렬 작업
@@ -101,13 +109,17 @@ string KeywordFixer::_FindChalHit(string InputWord, int DayIndex, int IsWeekend)
 }
 void ScoreCalculater::IncreaseScore(Node& node) {
 	bool bResetScore = false;
+	long long temp = 0;
 	if (min_score > (double)node.point * 0.1) {
 		node.point++;
 	}
 	else {
-		node.point += node.point * 0.1;
+		temp = node.point + node.point * 0.1;
+		if (temp <= max_score) {
+			node.point += node.point * 0.1;
+		}
 	}
-	if (node.point > max_score) {
+	if ((node.point > max_score) || (temp > max_score)) {
 		_ResetScore();
 	}
 }
@@ -184,11 +196,14 @@ void KeywordFixer::Reset(void) {
 		}
 	}
 	for (int i = 0; i < 2; i++) {
-		while (weekBest[i].size() != 0) {
-			weekBest[i].pop_back();
+		while (twoBest[i].size() != 0) {
+			twoBest[i].pop_back();
 		}
 	}
 	UZ = 9;
+}
+void KeywordFixer::SetScoreForTest(int value) {
+	Scal.SetScore(value);
 }
 int KeywordFixer::GetScore(string InputWord, string InputDay) {
 	int DayIndex = 0;
@@ -226,17 +241,16 @@ string KeywordFixer::FindWord(string InputWord, string InputDay) {
 	return InputWord;
 }
 
-void KeywordFixer::input() {
+#ifndef UNIT_TEST
+int main() {
 	ifstream fin{ "keyword_weekday_500.txt" }; //500개 데이터 입력
+	Levenshtein LevenAlgo;
+	KeywordFixer F(&LevenAlgo);
 	for (int i = 0; i < 500; i++) {
-		string InputWord, InputDay;	// [refac] t1, t2 naimg 
-		fin >> InputWord >> InputDay; // [refac] file access fail case 
-		string ret = FindWord(InputWord, InputDay);
+		string InputWord, InputDay;	// [refac] t1, t2 naimg
+		fin >> InputWord >> InputDay; // [refac] file access fail case
+		string ret = F.FindWord(InputWord, InputDay);
 		std::cout << ret << "\n";
 	}
 }
-/*
-int main() {
-	input();
-}
-*/
+#endif

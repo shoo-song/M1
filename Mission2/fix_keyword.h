@@ -27,6 +27,7 @@ struct ScoreCalculater {
 public:
 	void IncreaseScore(Node& node);
 	void IncreaseUZ(void);
+	void SetScore(int value);
 private:
 	void _ResetScore(void);
 	int min_score = 1;
@@ -38,14 +39,14 @@ public:
 		Algo = p;
 	}
 	int GetScore(string InputWord, string InputDay);
+	void SetScoreForTest(int value);
 	void Reset(void);
 	bool similer(const std::string& a, const std::string& b);
 	string FindWord(string InputWord, string InputDay);
-	void input();
 private:
 	ScoreCalculater Scal;
 	DistancceAlgorithm* Algo;
-	bool _ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend);
+	void _ParseInput(string InputWord, string InputDay, int& DayIndex, int& IsWeekend);
 	string _FindChalHit(string InputWord, int DayIndex, int IsWeekend);
 	bool _IsPerfectHit(string InputWord, int DayIndex, int IsWeekend);
 	void _AddNewWord(string InputWord, int DayIndex, int IsWeekend);
